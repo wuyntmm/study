@@ -4,8 +4,7 @@ age_in_month = 327
 age_in_years = age_in_month // 12
 print(age_in_years)
 
-name = git
-'Nazar'
+name = 'Nazar'
 my_age = "My name is " + name + " I'm " + str(age_in_years) + " years old"
 print(my_age)
 
