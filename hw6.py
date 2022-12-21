@@ -1,7 +1,7 @@
 my_dict = {
     'Fireman': 101,
-    'Police': 102,
-    'Ambulance': 103
+    'Policeman': 102,
+    'Doctor': 103
 }
 
 
