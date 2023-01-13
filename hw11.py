@@ -1,11 +1,11 @@
 import time
+from datetime import datetime
 
 
 def name_and_time(func):
-    print(f'You called function "{func.__name__}" on {time.ctime()}')
-
-    def inner_deco_func():
-        func()
+    def inner_deco_func(*args, **kwargs):
+        print(f'You called function "{func.__name__}" on {time.ctime()}')
+        return func(*args, **kwargs)
 
     return inner_deco_func
 
@@ -35,10 +35,11 @@ def universal_func():
             result.append(15 / i)
         else:
             raise MyCustomException(f'Custom exception is occurred. You tried dividing by {i}')
+    return result
 
 
 with MyCtxManager():
-    universal_func()
+    print(universal_func())
 
 try:
     print('==========')
