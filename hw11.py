@@ -1,6 +1,4 @@
 import time
-from datetime import datetime
-
 
 def name_and_time(func):
     def inner_deco_func(*args, **kwargs):
