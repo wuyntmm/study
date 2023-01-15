@@ -21,6 +21,7 @@ class MyCustomException(Exception):
     def __init__(self, message):
         with open('exception_log.txt', 'a') as file:
             print(f'{message} on {time.ctime()}', file=file)
+        super().__init__(message)
 
 
 try:
