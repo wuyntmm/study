@@ -1,7 +1,7 @@
 import json
 
 try:
-    with open('json') as file:
+    with open('phonebook.json') as file:
         print('Phonebook successful loaded')
 except FileNotFoundError:
     phonebook = {
@@ -10,10 +10,10 @@ except FileNotFoundError:
         'Doctor': '103'
     }
     print('There are no phonebook yet, let\'s create the new one')
-    with open('json', 'x+') as file:
+    with open('phonebook.json', 'x+') as file:
         file.write(json.dumps(phonebook))
 
-with open('json', 'r+') as file:
+with open('phonebook.json', 'r+') as file:
     my_dict = json.loads(file.read())
 
     def stats():
@@ -50,29 +50,29 @@ with open('json', 'r+') as file:
 
     while True:
 
-        users_input = input('What do you want to do? ')
+        users_input = input('What do you want to do? ').split()
 
-        match users_input.split()[0]:
+        match users_input[0]:
             case 'stats':
                 stats()
             case 'add':
-                if len(users_input.split()) > 2:
-                    add(users_input.split()[1], users_input.split()[2])
+                if len(users_input) > 2:
+                    add(users_input[1], users_input[2])
                 else:
                     print('Please enter the line in format \'add Name Number\'')
             case 'delete':
-                if len(users_input.split()) > 1:
-                    delete(users_input.split()[1])
+                if len(users_input) > 1:
+                    delete(users_input[1])
                 else:
                     print('Please enter the line in format \'delete Name\'')
             case 'list':
                 names()
             case 'show':
-                if len(users_input.split()) == 2:
-                    show(users_input.split()[1])
-                elif len(users_input.split()) > 2:
+                if len(users_input) == 2:
+                    show(users_input[1])
+                elif len(users_input) > 2:
                     print('There are no', end=' ')
-                    for item in users_input.split():
+                    for item in users_input:
                         print(item, end=' ')
                     print('in this dictionary')
                 else:
