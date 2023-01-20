@@ -61,7 +61,7 @@ with open('phonebook.json', 'r+') as file:
                     if re.search(r'(\+38|38)?0\d{9}\b', users_input[2]):
                         add(users_input[1], users_input[2])
                     else:
-                        print('Invalid number, please enter our number in format +380xxxxxxxxx')
+                        print('Invalid number, please enter the number in format +380xxxxxxxxx')
                 else:
                     print('Please enter the line in format \'add Name (+380xxxxxxxxx)\'')
             case 'delete':
