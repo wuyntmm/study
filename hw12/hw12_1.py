@@ -1,4 +1,5 @@
 import json
+import re
 
 try:
     with open('phonebook.json') as file:
@@ -57,9 +58,12 @@ with open('phonebook.json', 'r+') as file:
                 stats()
             case 'add':
                 if len(users_input) > 2:
-                    add(users_input[1], users_input[2])
+                    if re.search(r'(\+38|38)?0\d{9}\b', users_input[2]):
+                        add(users_input[1], users_input[2])
+                    else:
+                        print('Invalid number, please enter our number in format +380xxxxxxxxx')
                 else:
-                    print('Please enter the line in format \'add Name Number\'')
+                    print('Please enter the line in format \'add Name (+380xxxxxxxxx)\'')
             case 'delete':
                 if len(users_input) > 1:
                     delete(users_input[1])
