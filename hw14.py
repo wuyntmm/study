@@ -12,4 +12,4 @@ try:
         file.seek(0)
         file.write(text)
 except FileNotFoundError:
-    print('File doesn\'t exist')
+    print('File doesn\'t exist!')
