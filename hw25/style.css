@@ -1,0 +1,27 @@
+body {
+    background-color: #ECECEC;
+    text-align: left;
+}
+
+header {
+    background-color: #FFFFFF;
+    font-size: 34px;
+}
+
+
+table span {
+    margin-left: 5px;
+    font-size: 13px;
+    color: #999999;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+h3 {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
