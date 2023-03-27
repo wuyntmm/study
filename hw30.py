@@ -6,7 +6,7 @@ list_url = ["https://www.google.com/", "https://www.facebook.com/", "https://www
 
 link = random.choice(list_url)
 
-res = requests.get(f'{random.choice(list_url)}')
+res = requests.get(link)
 print(f'Status code is {res.status_code} from {link} with length of {len(res.text)} symbols')
 
 # Task2
