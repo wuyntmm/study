@@ -1,8 +1,10 @@
-from .__init__ import app
+from . import app
+import os
 import random
-from flask import request, redirect, render_template, session, url_for
+from flask import request, redirect, render_template, session, url_for, abort
+from .models import User, Book, Purchase
 
-app.secret_key = b'1234'
+app.secret_key = os.getenv('SECRET_KEY')
 @app.route('/hello')
 def index():
     app.logger.info('INFO was logged successfully')
@@ -13,11 +15,16 @@ def index():
 def get_users():
     user = session.get('user')
     if user:
-        names = ["Emily", "Jacob", "Ava", "Mia", "Noah", "Ethan", "Isabella", "Oliver", "Sophia", "Charlotte"]
-        random_names = []
-        for i in range(random.randint(2, 10)):
-            random_names.append(random.choice(names))
-        return render_template('users.html', random_names=random_names, user=user), 200
+        all_users = User.query.all()
+        dict_users = [{
+            'id': user.id,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'age': user.age
+        } for user in all_users]
+        if 'size' in request.args:
+            return dict_users[:int(request.args.get('size'))]
+        return dict_users, 200
     else:
         return redirect('/login')
 
@@ -26,41 +33,52 @@ def get_users():
 def get_book():
     user = session.get('user')
     if user:
-        books = [
-            "To Kill a Mockingbird by Harper Lee",
-            "1984 by George Orwell",
-            "The Catcher in the Rye by J.D. Salinger",
-            "The Great Gatsby by F. Scott Fitzgerald",
-            "Pride and Prejudice by Jane Austen",
-            "One Hundred Years of Solitude by Gabriel Garcia Marquez",
-            "The Hitchhiker's Guide to the Galaxy by Douglas Adams",
-            "The Hobbit by J.R.R. Tolkien",
-            "The Lord of the Rings by J.R.R. Tolkien",
-            "The Da Vinci Code by Dan Brown"
-        ]
-        books_list = []
-        for i in range(random.randint(2, 10)):
-            books_list.append(random.choice(books))
-        return render_template('books.html', books_list=books_list, user=user), 200
+        all_books = Book.query.all()
+        dict_books = [{
+            'id': book.id,
+            'title': book.title,
+            'author': book.author,
+            'year': book.year,
+            'price': book.price
+        } for book in all_books]
+        if 'size' in request.args:
+            return dict_books[:int(request.args.get('size'))]
+        return dict_books, 200
     else:
         return redirect('/login')
 
-@app.get('/users/<int:users_id>')
-def get_users_by_id(users_id):
+@app.get('/users/<int:user_id>')
+def get_users_by_id(user_id):
     user = session.get('user')
     if user:
-        if users_id % 2:
-            return render_template('user_not_found.html', user=user), 404
-        else:
-            return render_template('user_id.html', users_id=users_id, user=user)
+        all_users = User.query.all()
+        for user in all_users:
+            if user.id == user_id:
+                user1 = [{
+                    'id': user.id,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'age': user.age
+                }]
+                return user1
     else:
         return redirect('/login')
 
-@app.get('/books/<string:title>')
-def get_book_title(title):
+@app.get('/books/<int:book_id>')
+def get_book_title(book_id):
     user = session.get('user')
     if user:
-        return render_template('books_title.html', title=str(title).title(), user=user), 200
+        all_books = Book.query.all()
+        for book in all_books:
+            if book.id == book_id:
+                book1 = [{
+                    'id': book.id,
+                    'title': book.title,
+                    'author': book.author,
+                    'year': book.year,
+                    'price': book.price
+                }]
+                return book1, 200
     else:
         return redirect('/login')
 
@@ -104,3 +122,47 @@ def internal_server_error(e):
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.get('/purchase')
+def purchase():
+    all_purchase = Purchase.query.all()
+    dict_purchase = []
+    for purchase_1 in all_purchase:
+        all_books = Book.query.all()
+        book1 = [book for book in all_books if purchase_1.book_id == book.id]
+        all_users = User.query.all()
+        user1 = [user for user in all_users if purchase_1.user_id == user.id]
+        purchase_2 = {
+            'id': purchase_1.id,
+            'user_id': purchase_1.user_id,
+            'book_id': purchase_1.book_id,
+            'date': purchase_1.date,
+            'title': book1[0].title,
+            'first_name': user1[0].first_name,
+            'last_name': user1[0].last_name
+        }
+        dict_purchase.append(purchase_2)
+    if 'size' in request.args:
+        return dict_purchase[:int(request.args.get('size'))]
+    return dict_purchase
+
+@app.get('/purchase/<int:purchases_id>')
+def purchase_id(purchases_id):
+    all_purchase = Purchase.query.all()
+    for purchase1 in all_purchase:
+        if purchase1.id == purchases_id:
+            all_books = Book.query.all()
+            book1 = [book for book in all_books if purchase1.book_id == book.id]
+            all_users = User.query.all()
+            user1 = [user for user in all_users if purchase1.user_id == user.id]
+            purchase_1 = [{
+                'id': purchase1.id,
+                'user_id': purchase1.user_id,
+                'book_id': purchase1.book_id,
+                'date': purchase1.date,
+                'title': book1[0].title,
+                'first_name': user1[0].first_name,
+                'last_name': user1[0].last_name
+            }]
+            return purchase_1
+    return abort(404)
