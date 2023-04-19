@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse
-from user.models import User
+from .models import Purchase
 
-def get_users(request):
-    users = User.objects.all()
+def get_purchases(request):
+    users = Purchase.objects.all()
     data = {'users': list(users.values())}
     return JsonResponse(data)
