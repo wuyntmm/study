@@ -8,3 +8,6 @@ class User(models.Model):
 
     class Meta:
         db_table = 'user'
+
+    def __str__(self):
+        return f'ID: {self.id}, Name: {self.first_name}'

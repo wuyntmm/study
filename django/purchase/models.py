@@ -10,3 +10,7 @@ class Purchase(models.Model):
 
     class Meta:
         db_table = 'purchase'
+
+    def __str__(self):
+        return f'ID: {self.id}, Name: {self.user}, Book: {self.book} on date {self.date}'
+
