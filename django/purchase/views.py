@@ -1,7 +1,10 @@
-from django.http import HttpResponse, JsonResponse
 from .models import Purchase
+from django.views.generic import ListView, DetailView
 
-def get_purchases(request):
-    users = Purchase.objects.all()
-    data = {'users': list(users.values())}
-    return JsonResponse(data)
+
+class PurchaseList(ListView):
+    model = Purchase
+
+
+class PurchaseDetail(DetailView):
+    model = Purchase

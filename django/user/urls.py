@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import get_users
+from .views import ListUser, DetailUser,CreateUser
 
 urlpatterns = [
-    path('', get_users, name='user')
+    path('', ListUser.as_view(), name='user-list'),
+    path('<int:pk>', DetailUser.as_view(), name='user-detail'),
+    path('add/', CreateUser.as_view(), name='user-create'),
 ]
