@@ -6,4 +6,4 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Purchase
-        fields = ('user', 'book', 'date', )
+        fields = '__all__'

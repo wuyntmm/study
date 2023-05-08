@@ -1,2 +1,4 @@
 django 4.2
 python_dotenv
+djangorestframework 3.14.0
+django-filter 23.2
