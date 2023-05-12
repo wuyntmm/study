@@ -7,6 +7,8 @@ from .serializers import UserSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 import django_filters
+from user.tasks import some_text, purchase_for_id
+from rest_framework.response import Response
 
 class ListUser(ListView):
     model = User
@@ -55,3 +57,11 @@ class UserViewSet(ModelViewSet):
         django_filters.rest_framework.DjangoFilterBackend,
         filters.SearchFilter,
     ]
+
+    def perform_create(self, serializer):
+        some_text.delay()
+        serializer.save()
+
+    def perform_update(self, serializer):
+        purchase_for_id.delay()
+        serializer.save()
