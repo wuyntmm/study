@@ -140,3 +140,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
+
+# CELERY
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
